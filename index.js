@@ -9000,3 +9000,55 @@ const issues = [
     "url": "https://api.github.com/repos/learn-co-curriculum/js-donut-lab/issues/2"
   }
 ];
+
+  var issuesWithUpdatedApiUrl = issues.map(function (issue) {
+    if (issue.url.includes('api.github.com')) {
+      return Object.assign([], issue, {
+        url: issue.url.replace('api.github.com', 'api-v2.github.com')
+      })
+    }
+  })
+
+  var commentCountAcrossIssues = issues.map(function (issue) {
+    return issue.comments_count;}).reduce(function(a,b) {return a + b;});
+
+  function checkState(issues) {
+    return issues.state === "open"
+  }
+
+  var openIssues = issues.filter(checkState)
+
+  function notRobot(issues) {
+    if (!issues.body.includes("This pull request has been automatically created by learn.co.")) {
+      return issues.body
+    }
+  }
+
+  var nonAutomaticIssues = issues.filter(notRobot)
+//last show Off part! Thanks to Laura/Eoghan for showing me how to do!
+// function showoff() {
+//   var results = document.getElementById('results')
+var table = document.createElement('table');
+  for (let i = 0; i < nonAutomaticIssues.length; i++) {
+    var row = document.createElement("tr");
+    // results.appendChild(actual_row)
+
+    var td1 = document.createElement("td");
+    var td2 = document.createElement("td");
+    var td3 = document.createElement("td");
+
+    var text1 = document.createTextNode(`${nonAutomaticIssues[i].body}`);
+    var text2 = document.createTextNode(`${nonAutomaticIssues[i].state}`);
+    var text3 = document.createTextNode(`${nonAutomaticIssues[i].created_at}`);
+
+    td1.appendChild(text1);
+    td2.appendChild(text2);
+    td3.appendChild(text3);
+    row.appendChild(td1);
+    row.appendChild(td2);
+    row.appendChild(td3);
+
+    document.getElementById("results").appendChild(row);
+
+  }
+// }
